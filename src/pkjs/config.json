@@ -1,0 +1,24 @@
+[
+  {
+    "type": "heading",
+    "defaultValue": "Example Header Item"
+  },
+  {
+    "type": "text",
+    "defaultValue": "Example text item."
+  },
+  {
+    "type": "input",
+    "messageKey": "BACKGROUND_COLOR",
+    "label": "Email Address"
+  },
+  {
+    "type": "toggle",
+    "messageKey": "TEXT_COLOR",
+    "label": "Enable Animations"
+  },
+  {
+    "type": "submit",
+    "defaultValue": "Save"
+  }
+]

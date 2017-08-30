@@ -1,0 +1,10 @@
+*.iml
+.idea/
+node_modules/
+build/
+
+.lock-waf_linux2_build
+
+# we do not want to commit passwords / data
+*.secret.json
+card-sncf-gares.json

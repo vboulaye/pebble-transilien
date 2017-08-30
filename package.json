@@ -1,0 +1,77 @@
+{
+  "name": "pebble-transports",
+  "author": "vboulaye",
+  "version": "1.0.0",
+  "keywords": [
+    "pebble",
+    "transilien"
+  ],
+  "private": true,
+  "dependencies": {
+    "pebble-clay": "^1.0.4",
+    "pebblejs": "^1.0.0",
+    "xmldom": "^0.1.27"
+  },
+  "pebble": {
+    "displayName": "Mes Transports",
+    "uuid": "e3ff1ec2-7372-4240-82c0-9f21690d67bb",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "messageKeys": [
+      "BACKGROUND_COLOR",
+      "TEXT_COLOR"
+    ],
+    "resources": {
+      "media": [
+        {
+          "file": "fonts/Tauri-Regular.ttf",
+          "name": "FONT_14_TAURI",
+          "type": "font"
+        },
+        {
+          "file": "images/menu_icon.png",
+          "menuIcon": true,
+          "name": "IMAGE_MENU_ICON",
+          "type": "bitmap"
+        },
+        {
+          "file": "images/logo_splash.png",
+          "name": "IMAGE_LOGO_SPLASH",
+          "type": "bitmap"
+        },
+        {
+          "file": "images/tile_splash.png",
+          "name": "IMAGE_TILE_SPLASH",
+          "type": "bitmap"
+        },
+        {
+          "file": "images/rerb.png",
+          "name": "ICON_RER_B",
+          "type": "bitmap"
+        },
+        {
+          "file": "images/rerc.png",
+          "name": "ICON_RER_C",
+          "type": "bitmap"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "scripts": {
+    "test": "mocha src/pkjs/*.test.js"
+  }
+}
