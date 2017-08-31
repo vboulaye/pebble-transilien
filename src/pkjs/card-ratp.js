@@ -11,14 +11,14 @@ function refreshNextStopsCard() {
   // card.subtitle(station.source.replace(/\+/g, ' '));
 
   card.icon(station.icon);
-  card.title(station.title +"-"+station.subtitle);
+  card.title(station.title +"\n"+station.subtitle);
 //  card.subtitle(station.subtitle);
   card.body('chargement...');
 
   getNextRatpStops(station, function (schedulesList) {
     var schedules = "";
 
-    schedulesList.forEach(function (schedule) {
+    schedulesList.slice(0,4).forEach(function (schedule) {
       if (schedule.message) {
         schedules += schedule.message + "\n";
       }
@@ -40,7 +40,7 @@ function CardRatp(station) {
   this.card = new UI.Card({
     subtitleColor: 'indigo', // Named colors
     bodyColor: '#9a0036', // Hex colors
-    style: 'mono'
+   // style: 'mono'
   });
 
   this.refresh = refreshNextStopsCard;

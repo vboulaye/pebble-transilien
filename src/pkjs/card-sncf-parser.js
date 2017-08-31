@@ -20,7 +20,7 @@ function getNextSncfStops(station, onSuccess, onError) {
   const url = 'http://api.transilien.com/gare/' + source + '/depart/' + destination + '/';
   console.log("api-sncf url:" + url);
 
-  const login =SncfSecret.login;
+  const login = SncfSecret.login;
   const password = SncfSecret.password;
 
   ajax({
@@ -31,17 +31,22 @@ function getNextSncfStops(station, onSuccess, onError) {
     },
     function (xmlData) {
       try {
-        //console.log("sncf:result " + xmlData);
+        console.log("sncf:result " + xmlData);
         var doc = new DOMParser().parseFromString(xmlData);
         var trainsXml = doc.getElementsByTagName('train');
         var trains = [];
         for (var i = 0; i < trainsXml.length; i++) {
           var trainXml = trainsXml.item(i);
+
           var train = {};
           for (var j = 0; j < trainXml.childNodes.length; j++) {
             var trainElementXml = trainXml.childNodes.item(j);
             if (trainElementXml.nodeType == 1) {
               train[trainElementXml.tagName] = trainElementXml.firstChild.data;
+              for (var k = 0; k < trainElementXml.attributes.length; k++) {
+                var attributeXml = trainElementXml.attributes.item(k);
+                train[attributeXml.name] = attributeXml.value;
+              }
             }
           }
           trains.push(train);
@@ -59,21 +64,23 @@ function getNextSncfStops(station, onSuccess, onError) {
           // append the mission
           train.message += " " + train.miss;
 
-
-          var gareTerminus = GaresSncf[train.term];
-
-          var destination = gareTerminus.libelle_sms_gare;
-          destination =  destination.replace(/VersaillesRG/, 'Vers. RG')
-          destination =  destination.replace(/VersaillesCh/, 'Vers. Ch')
-          if (gareTerminus) {
-            train.message += " " + destination.substring(0,8);
+          if (train.etat) {
+            train.message += " " + train.etat;
+          } else {
+            var gareTerminus = GaresSncf[train.term];
+            if (gareTerminus) {
+              var destination = gareTerminus.libelle_sms_gare;
+              destination = destination.replace(/VersaillesRG/, 'Vers. RG')
+              destination = destination.replace(/VersaillesCh/, 'Vers. Ch')
+              train.message += " " + destination;//.substring(0,8);
+            }
           }
 
         });
 
         onSuccess(trains);
-      } catch(e) {
-        console.log("error during sncf api response parsing",e);
+      } catch (e) {
+        console.log("error during sncf api response parsing", e);
         onError(e);
       }
     },

@@ -1,8 +1,6 @@
 
 const UI = require('pebblejs/ui');
 
-var DOMParser = require('xmldom').DOMParser;
-
 var getNextSncfStops = require('./card-sncf-parser.js');
 
 
@@ -11,11 +9,8 @@ function refreshNextStopsCard() {
   var card = this.card;
   var station = this.station;
 
-  // card.title(station.network + ' ' + station.line);
-  // card.subtitle(station.source.replace(/\+/g, ' '));
-
   card.icon(station.icon);
-  card.title(station.title +"-"+station.subtitle);
+  card.title(station.title +"\n"+station.subtitle);
   card.body('chargement...');
 
   //console.log("refreshNextStopsCard " + station.title);
@@ -23,7 +18,7 @@ function refreshNextStopsCard() {
   getNextSncfStops(station, function (schedulesList) {
     var schedules = "";
 
-    schedulesList.forEach(function (schedule) {
+    schedulesList.slice(0,4).forEach(function (schedule) {
       if (schedule.message) {
         schedules += schedule.message + "\n";
       }
@@ -46,12 +41,11 @@ function CardSncf(station) {
   this.card = new UI.Card({
     subtitleColor: 'indigo', // Named colors
     bodyColor: '#9a0036', // Hex colors
-    style: 'mono'
+ //   style: 'mono'
   });
 
   this.refresh = refreshNextStopsCard;
   this.station = station;
-
 
 }
 

@@ -46,8 +46,8 @@ var STATIONS = [
   ,
   new CardRatp({
     icon: 'ICON_RER_B',
-    title: 'St Michel',
-    subtitle: 'Sud',
+    title: 'St-Michel',
+    subtitle: 'Laplace',
     network: 'RER',
     line: 'B',
     source: 'saint+michel+notre+dame',
@@ -56,7 +56,7 @@ var STATIONS = [
   new CardRatp({
     icon: 'ICON_RER_B',
     title: 'Laplace',
-    subtitle: 'Nord',
+    subtitle: 'St-Michel',
     network: 'RER',
     line: 'B',
     source: 'laplace',
@@ -65,7 +65,7 @@ var STATIONS = [
   new CardSncf( {
     icon: 'ICON_RER_C',
     title: 'Austerlitz',
-    subtitle: 'Juv',
+    subtitle: 'Juvisy',
     direction: 'N',
     source: 'Austerlitz',
     destination: 'Juvisy',
@@ -79,5 +79,7 @@ STATIONS.forEach(function (card) {
   CARDS.push(card);
   setupListeners(card);
 });
+
+
 
 CARDS[0].show();
