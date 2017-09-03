@@ -1,17 +1,26 @@
 require('pebblejs');
 
-var Clay = require('pebble-clay');
-var clayConfig = require('./config.json');
-var clay = new Clay(clayConfig);
+const Clay = require('pebble-clay');
+const clayConfig = require('./config.json');
+const clay = new Clay(clayConfig);
+const settings = JSON.parse(localStorage.getItem('clay-settings')) || {};
 
-var UI = require('pebblejs/ui');
+const CardTransilienInfo = require('./card-info.js');
 
-var CardRatp = require('./card-ratp.js');
-var CardSncf= require('./card-sncf.js');
+const CardTrain = require('./card-train.js');
+const SncfSchedule = require('./sncf-schedule.js');
+const RatpSchedule = require('./ratp-schedule.js');
+const CardClosestStations = require('./card-closest.js');
 
-var settings = JSON.parse(localStorage.getItem('clay-settings')) || {};
+const CARDS = [];
 
-var CARDS = [];
+// load nework info, showing the card if incidents are found
+const cardTransilienInfo = new CardTransilienInfo();
+cardTransilienInfo.refresh(function(){
+  if (cardTransilienInfo.hasIncidents) {
+    cardTransilienInfo.show();
+  }
+});
 
 function mod(a, n) {
   return ((a % n) + n) % n;
@@ -22,29 +31,46 @@ function setupListeners(cardHolder) {
   card.on('click', 'up', function (e) {
     var cardIndex = mod(cardHolder.cardIndex - 1, CARDS.length);
     CARDS[cardIndex].show();
+    cardHolder.card.hide();
   });
   card.on('click', 'down', function (e) {
     var cardIndex = mod(cardHolder.cardIndex + 1, CARDS.length);
     CARDS[cardIndex].show();
+    cardHolder.card.hide();
   });
-  card.on('click', 'select', function (e) {
-    cardHolder.refresh();
+  // card.on('click', 'select', function (e) {
+  //   if (cardHolder.displayDetails) {
+  //     cardHolder.displayDetails();
+  //   } else {
+  //     cardHolder.refresh();
+  //   }
+  // });
+  card.on('longClick', 'select', function (e) {
+    cardTransilienInfo.show();
   });
+
+  card.on('longClick', 'up', function (e) {
+    var closestStationsCard = new CardClosestStations();
+    closestStationsCard.refresh();
+    closestStationsCard.show();
+  });
+
   cardHolder.refresh();
+
+
 }
 
 
 var STATIONS = [
-  new CardSncf( {
-    icon: 'ICON_RER_C',
+
+  new CardTrain( new SncfSchedule({
     title: 'Juvisy',
     subtitle: 'BFM',
-    direction: 'N',
     source: 87545244,
     destination: 87328328,
-  })
-  ,
-  new CardRatp({
+    icon: 'ICON_RER_C',
+  })),
+  new CardTrain( new RatpSchedule({
     icon: 'ICON_RER_B',
     title: 'St-Michel',
     subtitle: 'Laplace',
@@ -52,8 +78,8 @@ var STATIONS = [
     line: 'B',
     source: 'saint+michel+notre+dame',
     direction: 'R'
-  }),
-  new CardRatp({
+  })),
+    new CardTrain( new RatpSchedule({
     icon: 'ICON_RER_B',
     title: 'Laplace',
     subtitle: 'St-Michel',
@@ -61,17 +87,17 @@ var STATIONS = [
     line: 'B',
     source: 'laplace',
     direction: 'A'
-  }),
-  new CardSncf( {
+    })),
+      new CardTrain( new SncfSchedule({
     icon: 'ICON_RER_C',
     title: 'Austerlitz',
     subtitle: 'Juvisy',
     direction: 'N',
     source: 'Austerlitz',
     destination: 'Juvisy',
-  })
-];
+      })),
 
+];
 
 
 STATIONS.forEach(function (card) {

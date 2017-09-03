@@ -1,21 +1,36 @@
 [
   {
     "type": "heading",
-    "defaultValue": "Example Header Item"
+    "defaultValue": "Configuration de l'accès à l'API Temp réel Transilien SNCF"
   },
   {
     "type": "text",
-    "defaultValue": "Example text item."
+    "defaultValue": "Pour effectuer des requêtes sur l'API SNCF trqnsilien, il fqut demander un accès."
   },
   {
     "type": "input",
-    "messageKey": "BACKGROUND_COLOR",
-    "label": "Email Address"
+    "messageKey": "SNCF_API_LOGIN",
+    "label": "login de l'API transilien SNCF"
   },
   {
-    "type": "toggle",
-    "messageKey": "TEXT_COLOR",
-    "label": "Enable Animations"
+    "type": "input",
+    "messageKey": "SNCF_API_PASSWORD",
+    "label": "mot de passe de l'API transilien SNCF",
+    "attributes": {
+      "type": "password"
+    }
+  },
+  {
+    "type": "heading",
+    "defaultValue": "Les gares à prendre en compte doivent être décrites suivant le format suivant:"
+  },
+  {
+    "type": "input",
+    "messageKey": "STATION_1",
+    "label": "paramètrage de l'arrèt à observer",
+    "attributes": {
+      "placeholder": "RER_B,laplace,St-Michel"
+    }
   },
   {
     "type": "submit",

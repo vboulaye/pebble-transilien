@@ -1,5 +1,5 @@
 {
-  "name": "pebble-transports",
+  "name": "pebble-transilien",
   "author": "vboulaye",
   "version": "1.0.0",
   "keywords": [
@@ -13,7 +13,7 @@
     "xmldom": "^0.1.27"
   },
   "pebble": {
-    "displayName": "Mes Transports",
+    "displayName": "Transilien",
     "uuid": "e3ff1ec2-7372-4240-82c0-9f21690d67bb",
     "sdkVersion": "3",
     "enableMultiJS": true,
@@ -27,8 +27,9 @@
       "watchface": false
     },
     "messageKeys": [
-      "BACKGROUND_COLOR",
-      "TEXT_COLOR"
+      "SNCF_API_LOGIN",
+      "SNCF_API_PASSWORD",
+      "STATION_1"
     ],
     "resources": {
       "media": [
@@ -68,6 +69,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.1",
+    "geolocation": "^0.2.0",
     "mocha": "^3.5.0",
     "xmlhttprequest": "^1.8.0"
   },

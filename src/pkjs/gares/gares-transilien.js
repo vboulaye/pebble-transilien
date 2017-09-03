@@ -1,4 +1,4 @@
-const garesSncfJson = require('./card-sncf-gares.json');
+const garesSncfJson = require('./gares-transilien.json');
 
 /*
 *  load the list of sncf gares

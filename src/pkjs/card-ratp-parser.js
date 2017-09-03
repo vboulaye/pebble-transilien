@@ -5,6 +5,12 @@ try {
 } catch (e) {
   ajax = _ajax;
 }
+var moment;
+try {
+  moment = require('pebblejs/vendor/moment');
+} catch (e) {
+  moment = _moment;
+}
 
 function getNextRatpStops(station, onSuccess, onError) {
 
@@ -13,9 +19,16 @@ function getNextRatpStops(station, onSuccess, onError) {
     M: 'metros'
   };
 
-  const url = "https://api-ratp.pierre-grimaud.fr/v3/schedules/"
-    + NETWORK_MAPPINGS[station.network] + "/" + station.line + "/"
-    + station.source + "/" + station.direction;
+
+  const network = station.network;
+  const line = station.line;
+
+  var url = "https://api-ratp.pierre-grimaud.fr/v3/schedules/"
+    + NETWORK_MAPPINGS[network] + "/" + line + "/"
+    + station.source;
+  if (station.direction) {
+    url += "/" + station.direction;
+  }
   console.log("api-ratp url:" + url);
 
   ajax({
@@ -23,25 +36,56 @@ function getNextRatpStops(station, onSuccess, onError) {
       type: 'json'
     },
     function (data) {
-      //console.log(data);//Train à quai V.1
+      // console.log(JSON.stringify(data));//Train à quai V.1
       if (data.result
         && data.result.schedules) {
+
+
         const schedules = data.result.schedules
+        //  filter out the non stopping trains
           .filter(function (schedule) {
-            return !(schedule.message.match(/^Sans /) || schedule.message.match(/^Train Sans /));
+            return !(schedule.message.match(/^Sans /)
+              || schedule.message.match(/^Train Sans /));
           })
           .map(function (schedule) {
-            schedule.message =  schedule.message.replace(/^Départ /, '')
-            schedule.message =  schedule.message.replace(/^Train /, '')
-            if (schedule.code) {
-              schedule.message += " " + schedule.code;
+
+              schedule.display = {};
+
+              if ('Schedules unavailable' === schedule.code) {
+              }
+
+
+              schedule.message = schedule.message.replace(/^Départ /, '')
+              schedule.message = schedule.message.replace(/^Train /, '')
+
+              // matches a l approche [+ voie]
+              if (schedule.message.indexOf(' l\'approche') > -1) {
+                schedule.display.etat = schedule.message;
+                schedule.display.time = moment().format('HH:mm');
+                // matches a quai [+ voie]
+              } else if (schedule.message.indexOf(' quai') > -1) {
+                schedule.display.etat = schedule.message;
+                schedule.display.time = moment().format('HH:mm');
+                // matches time + voie
+              } else if (schedule.message.indexOf(' ') > 0) {
+                schedule.display.etat = schedule.message.substr(schedule.message.indexOf(' ') + 1);
+                schedule.display.time = schedule.message.substr(0, schedule.message.indexOf(' '));
+              } else {
+                schedule.display.time = schedule.message;
+              }
+
+              schedule.display.mission = schedule.code;
+
+              if (schedule.code) {
+                schedule.message += " " + schedule.code;
+              }
+              //destination is useless here, does not show the actual end of the line
+              // if (schedule.destination) {
+              //   schedule.message += " " + schedule.destination;
+              // }
+              return schedule;
             }
-            //destination is useless here, does not show the actual end of the line
-            // if (schedule.destination) {
-            //   schedule.message += " " + schedule.destination;
-            // }
-            return schedule;
-          });
+          );
 
         onSuccess(schedules);
       }
@@ -50,10 +94,11 @@ function getNextRatpStops(station, onSuccess, onError) {
       if (!err) {
         err = 'http call error';
       }
-      console.log("error in api-ratp call:" + err);
+      console.log("error in api-ratp call:" + JSON.stringify(err));
       onError(err);
     }
   );
 }
+
 module.exports = getNextRatpStops;
 

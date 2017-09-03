@@ -27,6 +27,21 @@ describe('the sncf next stop parser', function () {
 
   });
 
+  it('should find a list of incoming trains from juvisy ', function (done) {
+    getNextSncfStops({
+      title: 'Juvisy',
+      direction: 'N',
+      source: 87545244
+    }, function (trains) {
+      // console.log(trains);
+      console.log(JSON.stringify(trains));
+
+      expect(trains).not.to.be.empty;
+      done();
+
+    }, done);
+
+  });
 
 });
 
