@@ -7,4 +7,4 @@ build/
 
 # we do not want to commit passwords / data
 *.secret.json
-gares-transilien.json
+**/gares-transilien.json
