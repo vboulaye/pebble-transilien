@@ -51,7 +51,7 @@ function getNextSncfStops(station, onSuccess, onError) {
 
       var trains = [];
       try {
-        // console.log("sncf:result " + xmlData);
+        console.log("sncf:result " + xmlData);
         var doc = domParser.parseFromString(xmlData);
         var trainsXml = doc.getElementsByTagName('train');
         for (var i = 0; i < trainsXml.length; i++) {

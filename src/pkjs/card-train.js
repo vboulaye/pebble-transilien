@@ -142,7 +142,11 @@ function computeNextTrainWaitInMinutes(nextTrainMoment, now) {
 
 CardTrain.prototype.refreshContents = function refreshContents(schedulesList) {
   const self = this;
-  const nextTrain = schedulesList[0].display;
+
+  const nextTrain = schedulesList[0] ? schedulesList[0].display:{
+    time: '??:??',
+    etat: 'pas de réponse'
+  };
   const now = moment();
   var nextTrainMoment = moment(nextTrain.time, 'HH:mm');
 
