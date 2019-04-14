@@ -10,8 +10,8 @@ function CardTrainDetails(station) {
   this.card = new UI.Menu({
     backgroundColor: 'black',
     textColor: 'white',
-    highlightBackgroundColor: Feature.color('orange','white'),
-    highlightTextColor: Feature.color('white','black'),
+    highlightBackgroundColor: Feature.color('orange', 'white'),
+    highlightTextColor: Feature.color('white', 'black'),
     status: {
       color: 'white',
       backgroundColor: 'black',
@@ -21,9 +21,9 @@ function CardTrainDetails(station) {
 
 
   if (station.subtitle) {
-    this.card.sections( [{title: station.title + "-" + station.subtitle}])
+    this.card.sections([{title: station.title + "-" + station.subtitle}])
   } else {
-    this.card.sections( [{title: station.title}])
+    this.card.sections([{title: station.title}])
   }
 
   this.card.on('select', function () {
@@ -50,12 +50,15 @@ CardTrainDetails.prototype.refreshCardContents = function refreshCardContents(sc
       subtitle = display.etat + ' ';
     }
     if (display.destination) {
-      subtitle = (subtitle || "" ) + display.destination;
+      subtitle = (subtitle || "") + display.destination;
     }
-    items.push({
-      title: display.time + ' ' + display.mission,
-      subtitle: subtitle,
-    });
+    var title;
+    if (display.nextTrainMinutes) {
+      title = display.nextTrainMinutes + ' ' + display.mission + ' - ' + display.time;
+    } else {
+      title = display.time + ' ' + display.mission;
+    }
+    items.push({title: title, subtitle: subtitle,});
   });
 
   //  console.log(schedules);

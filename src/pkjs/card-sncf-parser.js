@@ -19,6 +19,7 @@ const Base64 = require('./base64.js');
 
 const DOMParser = require('xmldom').DOMParser;
 const domParser = new DOMParser();
+const NextTrain = require('./time-next-train.js');
 
 function getNextSncfStops(station, onSuccess, onError) {
 
@@ -80,6 +81,8 @@ function getNextSncfStops(station, onSuccess, onError) {
             if (dateParts.length > 1) {
               train.message += dateParts[1];
               train.display.time = dateParts[1];
+
+              train.display.nextTrainMinutes = NextTrain(train.display.time);
             }
           }
           // append the mission

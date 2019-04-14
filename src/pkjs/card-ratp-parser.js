@@ -12,6 +12,8 @@ try {
   moment = _moment;
 }
 
+const NextTrain = require('./time-next-train.js');
+
 function getNextRatpStops(station, onSuccess, onError) {
 
   const NETWORK_MAPPINGS = {
@@ -74,6 +76,7 @@ function getNextRatpStops(station, onSuccess, onError) {
                 schedule.display.time = schedule.message;
               }
 
+              schedule.display.nextTrainMinutes = NextTrain(schedule.display.time);
               schedule.display.mission = schedule.code;
 
               if (schedule.code) {

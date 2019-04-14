@@ -4,6 +4,7 @@ const Feature = require('pebblejs/platform/feature');
 const moment = require('pebblejs/vendor/moment');
 
 const CardTrainDetails = require('./card-train-details.js');
+const NextTrain = require('./time-next-train.js');
 
 
 UI.Window.prototype.center = function (element, moveVector) {
@@ -74,9 +75,13 @@ function CardTrain(schedule) {
     //color: 'windsorTan'
     color: color,
   });
+
+
+
+  var toVerticalPosition = Feature.round(48, 32);
   const toField = new UI.Text({
-    size: new Vector2(size.x, 28),
-    position: new Vector2(0, size.y - 32),
+    size: new Vector2(size.x, new Vector2(0, size.y - toVerticalPosition)),
+    position: toVerticalPosition,
     font: 'gothic-28-bold',
     text: station.subtitle,
     textAlign: 'center',
@@ -134,11 +139,6 @@ CardTrain.prototype.preRefreshContents = function preRefreshContents() {
   self.nextStopDetailsField.text('chargement...');
 };
 
-function computeNextTrainWaitInMinutes(nextTrainMoment, now) {
-  const nextTrainMs = nextTrainMoment.valueOf() - now.valueOf();
-  const nextTrainMinutes = Math.floor(moment.duration(nextTrainMs).asMinutes());
-  return nextTrainMinutes;
-}
 
 CardTrain.prototype.refreshContents = function refreshContents(schedulesList) {
   const self = this;
@@ -147,18 +147,8 @@ CardTrain.prototype.refreshContents = function refreshContents(schedulesList) {
     time: '??:??',
     etat: 'pas de réponse'
   };
-  const now = moment();
-  var nextTrainMoment = moment(nextTrain.time, 'HH:mm');
 
-  // if we have a date in the past, we have the hour of a next day train
-  if (computeNextTrainWaitInMinutes(nextTrainMoment, now) < -5) {
-    nextTrainMoment = nextTrainMoment.add(1, 'days');
-  }
-  var nextTrainMinutes = computeNextTrainWaitInMinutes(nextTrainMoment, now);
-  if (nextTrainMinutes < 0) {
-    nextTrainMinutes = 0;
-  }
-
+  var nextTrainMinutes = NextTrain(nextTrain.time);
   self.nextStopField.text(nextTrainMinutes);
 
   const unit = nextTrainMinutes <= 1 ? 'minute' : 'minutes';

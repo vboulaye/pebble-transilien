@@ -3,6 +3,7 @@ const expect = require('chai').expect;
 //import global dependencies available through pebblejs
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 _ajax = require('../../node_modules/pebblejs/dist/js/lib/ajax.js');
+_moment = require('../../node_modules/pebblejs/dist/js/vendor/moment.js');
 
 var getNextSncfStops = require('./card-sncf-parser.js');
 

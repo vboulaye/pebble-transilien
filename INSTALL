@@ -1,0 +1,18 @@
+# Install dev environment
+
+install sdk from https://developer.rebble.io/developer.pebble.com/sdk/install/index.html
+ - https://developer.rebble.io/s3.amazonaws.com/assets.getpebble.com/pebble-tool/pebble-sdk-4.5-linux64.tar.bz2
+ - unzip and add bin dir to path
+ - install pip and virtualenv
+ - then:
+   - cd ~/pebble-dev/pebble-sdk-4.5-linux64
+   - virtualenv --no-site-packages .env
+   - source .env/bin/activate
+   - pip install -r requirements.txt
+   - deactivate
+ - disable stats collection using touch /home/uvba7442/.pebble-sdk/NO_TRACKING
+ - install SDK with pebble sdk install https://github.com/aveao/PebbleArchive/raw/master/SDKCores/sdk-core-4.5.tar.bz2
+
+now pebble build should work 
+
+and pebble install --log --phone <ip> to deploy to the watch (after activating the dev mode in the pebble app)
