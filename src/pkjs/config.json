@@ -5,7 +5,7 @@
   },
   {
     "type": "text",
-    "defaultValue": "Pour effectuer des requêtes sur l'API SNCF trqnsilien, il fqut demander un accès."
+    "defaultValue": "Pour effectuer des requêtes sur l'API SNCF transilien, il faut demander un accès."
   },
   {
     "type": "input",
